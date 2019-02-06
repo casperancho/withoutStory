@@ -9,55 +9,87 @@
 import UIKit
 import VK_ios_sdk
 
-class ViewController: UIViewController, VKSdkDelegate, VKSdkUIDelegate{
-    let dialogs = VKShareDialogController()
-    
+class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
     func vkSdkShouldPresent(_ controller: UIViewController!) {
-         self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)
     }
-    
     
     func vkSdkNeedCaptchaEnter(_ captchaError: VKError!) {
         
     }
     
     func vkSdkAccessAuthorizationFinished(with result: VKAuthorizationResult!) {
-        print("token: \(result.token)")
+        print("es")
     }
     
     func vkSdkUserAuthorizationFailed() {
-        print("nono")
+        print("no")
     }
+    
+    let dialogs = VKShareDialogController()
+    
+   
     
     let Scope = ["video"]
     var vk_app_id = "6848921"
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        VKSdk.initialize(withAppId: vk_app_id)
+
+        let wakeUpSession = VKSdk.wakeUpSession(Scope, complete: {(state: VKAuthorizationState, error: Error?) -> Void in
+                        if state == .authorized {
+
+                        } else {
+                            VKSdk.authorize(self.Scope)
+                        }
+                        return
+                    })
+
+
         
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     @IBOutlet var viewview: UIView!
     
     @IBAction func click(_ sender: Any) {
+        
+      
         let sdk = VKSdk.initialize(withAppId: self.vk_app_id)
         sdk?.uiDelegate = self
         sdk!.register(self)
         VKSdk.wakeUpSession(Scope, complete: {(state: VKAuthorizationState, error: Error?) -> Void in
             if state == .authorized {
-                
+                print("yes")
             } else {
                 VKSdk.authorize(self.Scope)
             }
             return
         })
-        video()
+
     }
     
-    func video(){
-        var video : VKRequest? = VKApi.users()?.get()
-        print(video)
+    @IBAction func sdcsd(_ sender: Any) {
+        var video : VKRequest = VKApi.request(withMethod: "video.get", andParameters: ["owner_id": "5526715"])
+        video.execute(resultBlock: { (response) -> Void in
+            let videos = response?.json as! NSDictionary
+            let videoCount = videos["count"]!
+            let items = videos["items"] as! NSArray
+            let first = items[0] as! NSDictionary
+            let firstTitle = first["title"] as! String
+            print(firstTitle)
+            print(videoCount)
+        },errorBlock: {(Error) -> Void in
+            print(Error)
+        })
+        print("wdewedwe")
+    }
+    func getVideo(ownner: String){
+        ///
     }
     
+    @IBAction func wayOUt(_ sender: Any) {
+        VKSdk.forceLogout()
+    }
 }
 

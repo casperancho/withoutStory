@@ -25,6 +25,23 @@
                                     <action selector="click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bYF-IT-aPa"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="459-xe-BA6">
+                                <rect key="frame" x="157" y="356" width="61" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button12"/>
+                                <connections>
+                                    <action selector="sdcsd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KTB-Jv-KmA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mja-tP-z84">
+                                <rect key="frame" x="164" y="409" width="47" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="домой"/>
+                                <connections>
+                                    <action selector="sdcsd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GLl-Jv-OlZ"/>
+                                    <action selector="wayOUt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sbo-ES-fXK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

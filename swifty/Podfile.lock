@@ -1,0 +1,16 @@
+PODS:
+  - SwiftyVK (3.2)
+
+DEPENDENCIES:
+  - SwiftyVK
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SwiftyVK
+
+SPEC CHECKSUMS:
+  SwiftyVK: 11cb7b0a1cc342153040ab532f82bdaf28c56345
+
+PODFILE CHECKSUM: 16705e197d980980ebef3864bf483a528aaf8d93
+
+COCOAPODS: 1.5.3
