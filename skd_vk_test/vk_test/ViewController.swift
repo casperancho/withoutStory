@@ -32,6 +32,9 @@ class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
     
     let Scope = ["video"]
     var vk_app_id = "6848921"
+    var videos : [Video] = []
+    var videoCount = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,22 +73,34 @@ class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
     }
     
     @IBAction func sdcsd(_ sender: Any) {
-        var video : VKRequest = VKApi.request(withMethod: "video.get", andParameters: ["owner_id": "5526715"])
-        video.execute(resultBlock: { (response) -> Void in
-            let videos = response?.json as! NSDictionary
-            let videoCount = videos["count"]!
-            let items = videos["items"] as! NSArray
-            let first = items[0] as! NSDictionary
-            let firstTitle = first["title"] as! String
-            print(firstTitle)
-            print(videoCount)
-        },errorBlock: {(Error) -> Void in
-            print(Error)
-        })
+        let userId = String(VKSdk.accessToken()?.localUser.id as! Int)
+        getVideo(ownner: userId)
         print("wdewedwe")
     }
     func getVideo(ownner: String){
-        ///
+        var video : VKRequest = VKApi.request(withMethod: "video.get", andParameters: ["owner_id": ownner])
+        video.execute(resultBlock: { (response) -> Void in
+            let videos = response?.json as! NSDictionary
+            self.videoCount = videos["count"]! as! Int
+            let items = videos["items"] as! NSArray
+            self.addingVideo(video: items)
+//            print(self.videoCount)
+        },errorBlock: {(Error) -> Void in
+            print(Error)
+        })
+        
+    }
+    
+    func addingVideo(video: NSArray){
+        for i in 0...video.count{
+            var current = video[i] as! NSDictionary
+            var new = Video(title: current["title"] as! String,
+                            duration: current["duration"] as! Int,
+                            picture: URL(string:(current["photo_320"] as! String))!,
+                            urlVid: URL(string: current["player"] as! String)!)
+            self.videos.append(new)
+        }
+//        print(self.videos)
     }
     
     @IBAction func wayOUt(_ sender: Any) {
