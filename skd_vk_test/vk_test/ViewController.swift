@@ -19,36 +19,40 @@ class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
     }
     
     func vkSdkAccessAuthorizationFinished(with result: VKAuthorizationResult!) {
-        print("es")
+        print("вошел")
     }
     
     func vkSdkUserAuthorizationFailed() {
-        print("no")
+        
     }
     
     let dialogs = VKShareDialogController()
     
-   
+    deinit {
+        self.vks_viewControllerWillDismiss()
+    }
     
     let Scope = ["video"]
     var vk_app_id = "6848921"
     var videos : [Video] = []
     var videoCount = 0
+    let testImage = UIImage()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         VKSdk.initialize(withAppId: vk_app_id)
-
         let wakeUpSession = VKSdk.wakeUpSession(Scope, complete: {(state: VKAuthorizationState, error: Error?) -> Void in
                         if state == .authorized {
-
+                            print("все ок")
                         } else {
+                            print("войди")
+                            VKSdk.authorize(self.Scope)
                             VKSdk.authorize(self.Scope)
                         }
                         return
                     })
-
+        
 
         
     }
@@ -74,8 +78,9 @@ class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
     
     @IBAction func sdcsd(_ sender: Any) {
         let userId = String(VKSdk.accessToken()?.localUser.id as! Int)
+        print("Получил id иду за видео")
         getVideo(ownner: userId)
-        print("wdewedwe")
+        
     }
     func getVideo(ownner: String){
         var video : VKRequest = VKApi.request(withMethod: "video.get", andParameters: ["owner_id": ownner])
@@ -84,6 +89,7 @@ class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
             self.videoCount = videos["count"]! as! Int
             let items = videos["items"] as! NSArray
             self.addingVideo(video: items)
+            
 //            print(self.videoCount)
         },errorBlock: {(Error) -> Void in
             print(Error)
@@ -92,19 +98,33 @@ class ViewController: UIViewController, VKSdkDelegate,VKSdkUIDelegate{
     }
     
     func addingVideo(video: NSArray){
-        for i in 0...video.count{
+        for i in 0...video.count-1{
             var current = video[i] as! NSDictionary
             var new = Video(title: current["title"] as! String,
                             duration: current["duration"] as! Int,
                             picture: URL(string:(current["photo_320"] as! String))!,
                             urlVid: URL(string: current["player"] as! String)!)
             self.videos.append(new)
+            print("добавил \(i)")
         }
-//        print(self.videos)
+        print("получил видео")
     }
     
     @IBAction func wayOUt(_ sender: Any) {
         VKSdk.forceLogout()
     }
+    
+    @IBOutlet weak var testinImage: UIImageView!
+    @IBAction func forphoto(_ sender: Any) {
+        let current = videos[0]
+        print(current.picture)
+        DispatchQueue.main.async {
+            let data = try? Data(contentsOf: current.picture)
+            self.testinImage.image = UIImage(data: data!)
+        }
+        
+        
+    }
+    
 }
 
